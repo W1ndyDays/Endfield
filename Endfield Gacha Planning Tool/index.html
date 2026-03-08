@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>终末地抽卡策略计算器</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <header class="hero">
+    <div class="wrap">
+      <h1>终末地抽卡策略计算器</h1>
+      <div class="hero-actions">
+        <a href="#plan1" class="btn primary">计算出货概率以及继承抽数期望</a>
+        <a href="#after-up" class="btn">计算是否补抽</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap stack">
+
+    <details class="card rules-details">
+      <summary>
+        <h2>规则口径</h2>
+      </summary>
+      <div class="details-content">
+        <ul class="bullets">
+          <li>6 星基础概率 0.8%，5 星 8%，4 星 91.2%。</li>
+          <li>6 星中有 50% 为当期 Up。</li>
+          <li>连续 65 次没有 6 星后，后续每次 6 星概率增加 5 个百分点。</li>
+          <li>120 抽内没有出 Up，则第 120 抽必定为当期 6 星 Up。</li>
+          <li>30 抽送当前池 10 抽，不计累计抽数，且不改变保底状态。</li>
+          <li>60 抽送下期池 10 抽；第二个奖池继承上个池自上次 6 星后的计数与概率。</li>
+        </ul>
+      </div>
+    </details>
+
+    <section id="plan1" class="card stack-sm">
+      <div class="section-head">
+        <div>
+          <h2>计算出货概率以及继承抽数期望</h2>
+          <p>目标：在想跳过的池子内控制抽数，并观察当前池的 Up 概率、6 星数量分布、武器配额收益与继承层数。</p>
+        </div>
+      </div>
+      <div class="controls">
+        <label>
+          当前池停手抽数（0–120）
+          <input id="plan1Range" type="range" min="0" max="120" value="60" />
+        </label>
+        <label>
+          数值
+          <input id="plan1Number" type="number" min="0" max="120" value="60" />
+        </label>
+      </div>
+      <div id="plan1Cards" class="grid metric-grid"></div>
+
+      <details class="table-details" open>
+        <summary>
+          <span>方法一节点表（每 10 抽）</span>
+          <span class="details-hint">默认展开</span>
+        </summary>
+        <p class="muted details-note">表格仅展示 0、10、20 …… 120 抽这些节点；上方卡片仍然显示你当前输入抽数的精确结果。</p>
+        <div class="table-wrap">
+          <table id="plan1Table">
+            <thead>
+              <tr>
+                <th>停手抽数</th>
+                <th>出 Up 概率</th>
+                <th>出 1 个 6 星</th>
+                <th>出 2 个 6 星</th>
+                <th>出 3 个 6 星</th>
+                <th>期望武器配额</th>
+                <th>平均继承层数</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+
+    <section id="after-up" class="card stack-sm">
+      <h2>已提前出 Up，还要不要补抽？</h2>
+      <p>输入你在当前池第几抽拿到了当期 Up，网站会比较“立刻停手”和“继续补到节点”的总投入效率。</p>
+      <div class="controls">
+        <label>
+          你在第几抽出了当期 Up（1–120）
+          <input id="hitPull" type="number" min="1" max="120" value="1" />
+        </label>
+      </div>
+      <div class="shortcut-box">
+        <div class="shortcut-title">补抽快捷键</div>
+        <div id="shortcutRow" class="shortcut-row"></div>
+      </div>
+      <div id="afterUpAdvice" class="notice"></div>
+      <div id="shortcutSummary" class="notice secondary-notice"></div>
+      <div class="table-wrap">
+        <table id="afterUpTable">
+          <thead>
+            <tr>
+              <th>停在总抽数</th>
+              <th>还要补几抽</th>
+              <th>当前池再出额外 6 星概率</th>
+              <th>这段补抽期望武器配额</th>
+              <th>下池拿 Up 的期望付费抽数</th>
+              <th>合计未来投入</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="double-six" class="card stack-sm">
+      <h2>双 6 星构筑</h2>
+      <p>目标定义：第 111–119 抽区间内至少出现 1 个非 Up 6 星，且第 120 抽再吃到当期 Up 保底。</p>
+      <div class="controls">
+        <label>
+          继承起手层数（0–64）
+          <input id="doubleCounter" type="range" min="0" max="64" value="25" />
+        </label>
+        <label>
+          数值
+          <input id="doubleCounterNumber" type="number" min="0" max="64" value="25" />
+        </label>
+      </div>
+      <div id="doubleSixOutput" class="grid metric-grid"></div>
+    </section>
+
+    <section class="card stack-sm">
+      <h2>说明</h2>
+      <p class="muted">页面内所有计算都在浏览器本地完成</p>
+    </section>
+  </main>
+
+
+  <script src="./app.js"></script>
+</body>
+</html>
