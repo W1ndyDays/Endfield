@@ -199,7 +199,7 @@ function renderPlan1() {
     ['出 1 个 6 星', fmtPct(row.pOne)],
     ['出 2 个 6 星', fmtPct(row.pTwo)],
     ['出 3 个 6 星', fmtPct(row.pThree)],
-    ['期望代币', fmtW(row.expectedTokens)],
+    ['期望武库配额', fmtW(row.expectedTokens)],
     ['平均继承层数', fmtNum(row.expectedCounter)],
   ].map(([label, value]) => `<article class="metric"><div class="label">${label}</div><div class="value">${value}</div></article>`).join('');
 
@@ -218,7 +218,7 @@ function renderPlan1() {
 }
 
 function getCandidateStops(hit) {
-  const candidates = [hit, 30, 60, 70, 90, 120].filter((v, i, arr) => v >= hit && arr.indexOf(v) === i);
+  const candidates = [hit, 30, 60, 80, 90, 120].filter((v, i, arr) => v >= hit && arr.indexOf(v) === i);
   return candidates.sort((a, b) => a - b);
 }
 
@@ -252,7 +252,7 @@ function renderAfterUp() {
 
   const picked = rows.find(r => r.totalStop === selectedShortcutStop) || rows[0];
   const summary = document.getElementById('shortcutSummary');
-  summary.innerHTML = `<span class="pill">快捷结果</span> 选择补到 ${picked.totalStop} 抽后：还需补 ${picked.needMore} 抽，当前池再出额外 6 星概率为 ${fmtPct(picked.pExtra6)}，这段补抽期望代币为 ${fmtW(picked.expectedTokens)}，下池拿 Up 的期望付费抽数为 ${fmtNum(picked.expectedPaidNext)}，合计未来投入约 ${fmtNum(picked.totalFutureSpend)} 抽。`;
+  summary.innerHTML = `<span class="pill">快捷结果</span> 选择补到 ${picked.totalStop} 抽后：还需补 ${picked.needMore} 抽，当前池再出额外 6 星概率为 ${fmtPct(picked.pExtra6)}，这段补抽期望武器配额为 ${fmtW(picked.expectedTokens)}，下池拿 Up 的期望付费抽数为 ${fmtNum(picked.expectedPaidNext)}，合计未来投入约 ${fmtNum(picked.totalFutureSpend)} 抽。`;
 
   const tbody = document.querySelector('#afterUpTable tbody');
   tbody.innerHTML = rows.map(r => `
